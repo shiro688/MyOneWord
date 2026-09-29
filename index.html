@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" class="locked">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hydrangea</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,600&family=DM+Sans:wght@400;500&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--ink:#f1e8ff;--c1:#0e0c24;--c2:#241240;
+  --serif:"Cormorant Garamond",Georgia,serif;--sans:"DM Sans",system-ui,sans-serif;--script:"Dancing Script",cursive}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+html.locked,html.locked body{overflow:hidden;height:100%}
+body{background:#0e0c24;color:var(--ink);font:400 1.05rem/1.7 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.sky{position:fixed;inset:0;z-index:-2;
+  background:radial-gradient(circle at 15% 10%,rgba(140,120,255,.16),transparent 55%),
+  radial-gradient(circle at 90% 90%,rgba(255,120,170,.13),transparent 50%),linear-gradient(160deg,var(--c1),var(--c2))}
+#petals{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+h1,h2{font-family:var(--serif);font-style:italic;font-weight:600}
+h2{font-size:clamp(2rem,6vw,3.3rem);line-height:1.12;margin-bottom:.8rem}
+.glass{background:rgba(255,255,255,.07);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.16);border-radius:28px;padding:1.5rem 1.75rem;box-shadow:0 12px 40px rgba(0,0,0,.4);max-width:36rem;margin-inline:auto}
+
+/* Gate */
+.gate{position:fixed;inset:0;z-index:50;display:grid;place-content:center;justify-items:center;text-align:center;padding:2rem;
+  background:rgba(12,8,28,.55);-webkit-backdrop-filter:blur(22px) saturate(1.2);backdrop-filter:blur(22px) saturate(1.2);
+  transition:opacity 1.4s ease,-webkit-backdrop-filter 1.4s,backdrop-filter 1.4s,visibility 0s 1.4s}
+.gate.open{opacity:0;visibility:hidden;pointer-events:none;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0)}
+.gate small{font-size:1.1rem;opacity:.8}
+.gate h2{font-size:clamp(3rem,13vw,6rem);margin:.2rem 0 1.4rem}
+.enter{font:500 1.15rem var(--sans);color:#fff;border:0;border-radius:999px;padding:1rem 2.6rem;cursor:pointer;
+  background:linear-gradient(120deg,#5b7cfa,#b07be0,#ff8fb8);box-shadow:0 8px 30px rgba(190,90,180,.45);animation:pulse 2.2s ease-in-out infinite}
+.enter:focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+.gate p{font-size:.9rem;opacity:.7;margin-top:1rem}
+@keyframes pulse{50%{transform:scale(1.07)}}
+
+/* Sound */
+.sound{position:fixed;z-index:40;right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));
+  display:flex;align-items:center;gap:.6rem;padding:.4rem .9rem .4rem .5rem;border-radius:999px;opacity:0;transition:opacity 1s 1s;
+  background:rgba(30,22,52,.75);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 4px 20px rgba(120,60,150,.25)}
+.sound.show{opacity:1}
+.sound button{font-size:1.3rem;background:none;border:0;cursor:pointer;line-height:1;padding:.3rem}
+.sound input{width:90px;accent-color:#b07be0}
+
+/* Hero */
+.hero{min-height:100vh;min-height:100svh;display:grid;place-content:center;text-align:center;padding:2rem;position:relative}
+/* IMAGE (hero background): images/hero.jpg  https://www.pinterest.com/ideas/hydrangea-wallpaper/932479329639/ */
+.hero::before{content:"";position:absolute;inset:0;background:url("images/hero.jpg") center/cover;opacity:.28;
+  -webkit-mask-image:linear-gradient(#000 60%,transparent);mask-image:linear-gradient(#000 60%,transparent)}
+.hero>*{position:relative}
+.hero h1{font-size:clamp(3.6rem,17vw,10rem);line-height:1.05;padding:0 .1em .1em;
+  background:linear-gradient(90deg,#7f98ff,#c59bf7,#ff9fc6);-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:float 5s ease-in-out infinite}
+.hero p{margin:.6rem auto 0;max-width:30ch}
+.cue{margin-top:2rem;font-family:var(--script);font-size:1.4rem;animation:float 2.4s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-10px)}}
+
+/* Arch chapters */
+.story{display:grid;gap:5rem;max-width:900px;margin:0 auto}
+.chapter{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center}
+.chapter:nth-child(even) figure{order:2}
+.chapter figure{aspect-ratio:4/5;border-radius:200px 200px 16px 16px;overflow:hidden;background:var(--g);box-shadow:0 14px 40px rgba(0,0,0,.55)}
+.chapter figure img{width:100%;height:100%;object-fit:cover;display:block}
+.chapter:nth-child(1){--g:linear-gradient(160deg,#9db2ff,#5b7cfa)}
+.chapter:nth-child(2){--g:linear-gradient(160deg,#ffc2d8,#ff8fb8)}
+.chapter:nth-child(3){--g:linear-gradient(160deg,#c9b3f5,#8e6bd8)}
+.chapter:nth-child(4){--g:linear-gradient(160deg,#f6f2ff,#c9c0e0)}
+.chapter p{max-width:34ch}
+.rv{opacity:0;transform:translateY(40px);transition:opacity .9s,transform .9s}
+.rv.in{opacity:1;transform:none}
+@media (max-width:719px){.chapter{grid-template-columns:1fr;text-align:center}.chapter:nth-child(even) figure{order:0}
+  .chapter figure{max-width:300px;margin:0 auto}.chapter p{margin:0 auto}}
+
+
+/* Why flower */
+.why{max-width:40rem;text-align:left}
+.why small,.garden small{opacity:.7;letter-spacing:.1em;text-transform:uppercase;font-size:.75rem}
+.why h2{margin:.3rem 0 1.1rem}
+.why p{margin-top:1rem;font-size:1.02rem;opacity:.92}
+.why p.lead{font:italic 500 1.35rem/1.55 var(--serif);opacity:1}
+.why em{font-family:var(--serif);font-size:1.15em;color:#ffc2d8}
+.lang{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:1.3rem 0 .4rem;padding:0;list-style:none}
+.lang li{padding:.7rem .9rem;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);font-size:.9rem;line-height:1.4}
+.lang b{display:block;font:italic 600 1.2rem var(--serif);color:#e9d7ff}
+@media (max-width:420px){.lang{grid-template-columns:1fr}}
+.mean{display:inline-block;margin-bottom:.7rem;padding:.25rem .8rem;border-radius:999px;font:500 .78rem var(--sans);letter-spacing:.04em;
+  background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.28)}
+.chapter:nth-child(1) .mean{color:#b9c7ff;border-color:#7f98ff}
+.chapter:nth-child(2) .mean{color:#ffc2d8;border-color:#ff8fb8}
+.chapter:nth-child(3) .mean{color:#dcc8ff;border-color:#b593f0}
+.chapter:nth-child(4) .mean{color:#fff;border-color:#e6e0f5}
+.chapter p{max-width:36ch}
+.garden{text-align:center;max-width:36rem}
+.garden h2{margin:.3rem 0 1rem}
+.garden p{margin-top:.9rem;opacity:.92}
+
+/* Soil lab */
+.pad{padding:5rem 1.25rem}
+.lab{text-align:center;max-width:26rem}
+.lab small{opacity:.7;letter-spacing:.1em;text-transform:uppercase;font-size:.75rem}
+.lab h2{margin:.3rem 0 1.3rem}
+.stage{position:relative;width:min(70vw,260px);aspect-ratio:4/5;margin:0 auto 1.2rem;border-radius:200px 200px 16px 16px;overflow:hidden;
+  background:rgb(var(--tint,91,124,250));box-shadow:0 0 70px rgba(var(--tint,91,124,250),.5),0 14px 40px rgba(0,0,0,.5)}
+.stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ph{font:600 1.4rem var(--script);min-height:2.2rem}
+.lab input{display:block;width:100%;height:10px;border-radius:99px;-webkit-appearance:none;appearance:none;margin:.9rem 0 .4rem;
+  background:linear-gradient(90deg,#5b7cfa,#8e6bd8,#ff8fb8);touch-action:pan-y}
+.lab input::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;border-radius:50%;background:#fff;border:0;box-shadow:0 2px 14px rgba(0,0,0,.6);cursor:grab}
+.lab input::-moz-range-thumb{width:30px;height:30px;border-radius:50%;background:#fff;border:0;box-shadow:0 2px 14px rgba(0,0,0,.6);cursor:grab}
+.lab input:focus-visible{outline:3px solid var(--ink);outline-offset:6px}
+.ends{display:flex;justify-content:space-between;font-size:.8rem;opacity:.65}
+.stage img{transition:opacity .9s}
+.stage{transition:background .9s,box-shadow .9s}
+#sb,#sp{transition:none}
+#sw{opacity:0}
+.chip{margin-top:1rem;font:500 .9rem var(--sans);color:var(--ink);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.3);
+  border-radius:999px;padding:.45rem 1.1rem;cursor:pointer;transition:background .3s,colour .3s}
+.chip[aria-pressed=true]{background:#f4efff;color:#2d1b45}
+.chip:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.lab p{font-size:.98rem;opacity:.9;margin-top:.9rem;min-height:3.4em}
+
+/* Letter */
+.letter{text-align:center;padding-bottom:9rem}
+.seal{display:block;margin:0 auto;width:96px;height:96px;border-radius:50%;border:0;cursor:pointer;color:#fff;
+  background:radial-gradient(circle at 35% 30%,#ff8fb8,#c2185b 70%);box-shadow:0 8px 24px rgba(160,20,90,.5);animation:beat 1.6s ease-in-out infinite}
+.seal:focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+.seal svg{width:44px;height:44px;fill:currentColor}
+@keyframes beat{15%{transform:scale(1.12)}30%{transform:scale(1)}45%{transform:scale(1.08)}}
+.hint{font-family:var(--script);font-size:1.5rem;margin:.6rem 0 1.4rem}
+.paper{max-width:34rem;margin:0 auto;max-height:0;overflow:hidden;text-align:left;background:#1d1530;border-radius:6px;
+  transition:max-height 2.2s ease,box-shadow 1s;box-shadow:none;
+  background-image:repeating-linear-gradient(transparent 0 calc(2rem - 1px),rgba(190,150,240,.16) calc(2rem - 1px) 2rem);
+  border-left:3px solid rgba(240,120,150,.5)}
+.letter.open .paper{max-height:6000px;box-shadow:0 20px 60px rgba(150,80,220,.25)}
+.paper .in{padding:2rem 1.5rem 1rem 1.6rem}
+.paper p{font:italic 500 1.25rem/2rem var(--serif);margin-bottom:2rem}
+.paper p:empty{display:none}
+.pen{display:inline-block;width:2px;height:1.15em;margin-left:2px;vertical-align:-.2em;background:#ff8fb8;animation:blink .8s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.paper .sig{font:600 1.7rem/2rem var(--script)}
+
+@media (min-width:700px){.pad{padding:7rem 2rem}.paper .in{padding:2.5rem 2.5rem 1rem 2.8rem}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<div class="sky"></div>
+<canvas id="petals"></canvas>
+<audio id="bgm" src="music.mp3" loop preload="auto"></audio>
+
+<div class="gate" id="gate">
+  <small>What my answer is</small>
+  <h2>One Word!</h2>
+  <button class="enter" id="enter">Enter</button>
+  <p>Sound on, please</p>
+</div>
+
+<div class="sound" id="sound">
+  <button id="mute" aria-label="Mute or unmute music">🔊</button>
+  <input id="vol" type="range" min="0" max="1" step="0.05" value="0.6" aria-label="Music volume">
+</div>
+
+<header class="hero">
+  <small>If I had to describe you in one word</small>
+  <h1>Flower</h1>
+  <p>I'm not a poet or a writer. I'm a coder so here's my answer for you.</p>
+  <div class="cue">scroll slowly</div>
+</header>
+
+<section class="pad">
+  <div class="glass lab rv" id="lab">
+    <small>try it</small>
+    <h2>Change the soil, change the flower.</h2>
+    <div class="stage" id="stage">
+      <img src="images/purple.jpg" alt="Purple hydrangeas" onerror="this.remove()">
+      <img id="sb" src="images/blue.jpg" alt="Blue hydrangeas" onerror="this.remove()">
+      <img id="sp" src="images/pink.jpg" alt="Pink hydrangeas" onerror="this.remove()">
+      <img id="sw" src="images/white.jpg" alt="White hydrangeas" onerror="this.remove()">
+    </div>
+    <div class="ph" id="ph"></div>
+    <input id="soil" type="range" min="0" max="1" step="0.01" value="0" aria-label="Soil acidity, from acidic to alkaline">
+    <div class="ends"><span>acidic</span><span>alkaline</span></div>
+    <button class="chip" id="wh" aria-pressed="false">or born white</button>
+    <p id="tx" aria-live="polite"></p>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="glass why rv">
+    <small>why flower</small>
+    <h2>Why I chose the word flower.</h2>
+    <p class="lead">Yes, I can say one word is not enough. But that's just the generic answer everyone gives. This is my own answer, the one I want to give to you. It's mine and only mine, and it describes you and how I see you.</p>
+    <p>I chose <em>flower</em> because a flower has its own language. It isn't just one thing. The word comes with so many different kinds, and each kind is a different way to say what you feel without needing to say it out loud.</p>
+    <p>Hydrangea isn't your favourite flower. It's just one of my favourites. But the word <em>flower</em> is bigger than any single one. It holds every kind, every colour, and every way of expressing something. That's why one word can carry so much of you.</p>
+    <ul class="lang">
+      <li><b>Sunflower</b>loyalty and adoration</li>
+      <li><b>Tulip</b>deep, caring love</li>
+      <li><b>Forget-me-not</b>true love and remembrance</li>
+      <li><b>Lavender</b>devotion and calm</li>
+      <li><b>Peony</b>happiness and good fortune</li>
+      <li><b>Hydrangea</b>heartfelt feeling and gratitude</li>
+    </ul>
+    <p>Every one of them says something different, and you are all of it to me. That's why I couldn't pick a smaller word.</p>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="story">
+    <div class="chapter rv">
+      <figure><img src="images/blue.jpg" alt="Blue hydrangeas" onerror="this.remove()"></figure>
+      <div>
+        <span class="mean">Blue · gratitude and understanding</span>
+        <h2>You make my days better.</h2>
+        <p>Blue is my colour, and a blue hydrangea says thank you and I understand. That's how you are with me. When blue and pink mix together, they turn purple, which is both of our favourites. You aren't just any flower. You're the one that fits with me.</p>
+      </div>
+    </div>
+    <div class="chapter rv">
+      <figure><img src="images/pink.jpg" alt="Pink hydrangeas" onerror="this.remove()"></figure>
+      <div>
+        <span class="mean">Pink · heartfelt feeling</span>
+        <h2>You bring colour into my world.</h2>
+        <p>Pink is your colour, and a pink hydrangea stands for sincere, heartfelt emotion. You know I used to do art, so you know I notice colour. Flowers are how I show it, because you brought so much colour and beauty into my world just by being in it.</p>
+      </div>
+    </div>
+    <div class="chapter rv">
+      <figure><img src="images/purple.jpg" alt="Purple hydrangeas" onerror="this.remove()"></figure>
+      <div>
+        <span class="mean">Purple · deep understanding</span>
+        <h2>Resilient and fragile, both at once.</h2>
+        <p>Purple is where your colour meets mine, and it stands for wanting to understand someone deeply. You're incredibly strong and delicate at the same time. You keep growing beautifully through every season, and you bring joy to everyone who sees you. Including me.</p>
+      </div>
+    </div>
+    <div class="chapter rv">
+      <figure><img src="images/white.jpg" alt="White hydrangeas" onerror="this.remove()"></figure>
+      <div>
+        <span class="mean">White · purity and grace</span>
+        <h2>Quiet, and unmistakably you.</h2>
+        <p>White hydrangeas stand for purity, grace and quiet beauty. Some bloom white without any soil to change them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="glass garden rv">
+    <small>everything I make</small>
+    <h2>Not even a garden is enough.</h2>
+    <p>Just like everything I've made, I made this with flowers, because it reminds me of you.</p>
+    <p>No amount of words can describe you. But flowers have their own language, and not even a whole garden of flowers is enough to say how much you mean to me.</p>
+  </div>
+</section>
+
+<section class="pad letter" id="letter">
+  <button class="seal" id="seal" aria-expanded="false" aria-label="Open the letter">
+    <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.3C.8 8 3 4.5 6.5 4.5c2 0 3.7 1.1 5.5 3.2 1.8-2.1 3.5-3.2 5.5-3.2 3.5 0 5.7 3.5 4.1 7.2C19.5 16.4 12 21 12 21z"/></svg>
+  </button>
+  <div class="hint" id="hint">tap the seal</div>
+  <div class="paper"><div class="in">
+    <p style="--i:0">My Princess,</p>
+    <p style="--i:1">You asked me to describe you in one word, But you asked me this while I was working. I couldn't give you a serious answer and I know you wanted a proper answer, but I couldn't think of one word that could simply describe you.</p>
+    <p style="--i:2">At first, I thought of the words came to mind first which was priceless, irreplaceable , My world , my treasure or even something funny like silly because of the questions you ask me those silly questions that make life more interesting and funny.</p>
+    <p style="--i:3">The colour you give me, the way you brighten the start of my day when you first text me or even reply to my text makes my day better I miss those. Send me any emoji like a plane which is representing our next trip hehehe, so I know you did read this far, If you don't I will know if you did read it or not.</p>
+    <p style="--i:4">But the reason I choose flower because no other spoken language can describe how much you mean to me. So a flower is the perfect example as to why it describes you the best because it's a language you can see. It's the language of flowers and I remember you saying you are a visual learner hehehe.</p>
+    <p style="--i:5">And there is plenty of ways to express how much i feel towards you but a garden is not enough to express how much you mean to me.</p>
+    <p style="--i:6">I know Hydrangea isn't your favourite flower, but it's one of mine, so it's the one I used to show you.</p>
+    <p style="--i:7">This flower holds many different meaning with the colour it holds, That is what you are to me which is why im grateful for you with more feeling than one word can hold.</p>
+    <p class="sig" style="--i:8">Your,<br> Bibi 💖</p>
+  </div></div>
+</section>
+
+<script>
+(function(){
+  try{if('scrollRestoration' in history)history.scrollRestoration='manual'}catch(e){}
+  window.scrollTo(0,0);
+  var root=document.documentElement,gate=document.getElementById('gate'),a=document.getElementById('bgm'),
+      snd=document.getElementById('sound'),mute=document.getElementById('mute'),vol=document.getElementById('vol');
+
+  /* Gate + music */
+  gate.addEventListener('touchmove',function(e){e.preventDefault()},{passive:false});
+  document.getElementById('enter').onclick=function(){
+    root.classList.remove('locked');gate.classList.add('open');snd.classList.add('show');
+    a.volume=parseFloat(vol.value);var p=a.play();if(p&&p.catch)p.catch(function(){});
+  };
+  function icon(){mute.textContent=(a.muted||a.volume===0)?'🔇':'🔊'}
+  mute.onclick=function(){a.muted=!a.muted;icon()};
+  vol.oninput=function(){a.volume=parseFloat(vol.value);if(a.muted&&a.volume>0)a.muted=false;icon()};
+
+  /* Helpers */
+  function mix(x,y,t){return x.map(function(v,i){return Math.round(v+(y[i]-v)*t)})}
+  function ss(a,b,x){x=Math.min(1,Math.max(0,(x-a)/(b-a)));return x*x*(3-2*x)}
+  function rgb(c){return 'rgb('+c.join(',')+')'}
+  var pal=[[0,[14,12,36],[36,18,60]],[.3,[16,24,66],[52,28,88]],[.55,[52,20,66],[86,30,84]],
+           [.8,[42,24,84],[78,26,78]],[1,[34,18,66],[70,22,62]]];
+  function sky(p){for(var i=1;i<pal.length;i++){if(p<=pal[i][0]){var t=(p-pal[i-1][0])/(pal[i][0]-pal[i-1][0]);
+    root.style.setProperty('--c1',rgb(mix(pal[i-1][1],pal[i][1],t)));root.style.setProperty('--c2',rgb(mix(pal[i-1][2],pal[i][2],t)));return}}}
+
+
+  /* Soil lab */
+  var rg=document.getElementById('soil'),stg=document.getElementById('stage'),sb=document.getElementById('sb'),sp=document.getElementById('sp'),
+      phE=document.getElementById('ph'),tx=document.getElementById('tx'),touched=false,
+      names=['blue','purple','pink'],
+      lines=['Plant it here and it grows blue, my favorite colour.','Mix the two and it turns purple, which is both of our favourite colour.','Plant it there and it grows pink, your favourite colour.'];
+  function soil(v){sb.style.opacity=Math.max(0,1-2*v);sp.style.opacity=Math.max(0,2*v-1);
+    stg.style.setProperty('--tint',(v<.5?mix([91,124,250],[142,107,216],v*2):mix([142,107,216],[255,143,184],v*2-1)).join(','));
+    var k=v<.28?0:v>.72?2:1;phE.textContent='pH '+(4.5+3*v).toFixed(1)+' \u00b7 '+names[k];tx.textContent=lines[k]}
+  var wh=document.getElementById('wh'),sw=document.getElementById('sw'),white=false;
+  function setWhite(on){white=on;wh.setAttribute('aria-pressed',on);sw.style.opacity=on?1:0;
+    if(on){stg.style.setProperty('--tint','244,240,252');phE.textContent='no soil needed \u00b7 white';
+      tx.textContent='Some are simply born white: quiet, clean, and no soil can change them.'}
+    else soil(+rg.value)}
+  wh.onclick=function(){touched=true;setWhite(!white)};
+  rg.addEventListener('pointerdown',function(){touched=true});
+  rg.oninput=function(){touched=true;if(white)setWhite(false);else soil(+rg.value)};
+  soil(0);
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){rg.value=.5;soil(.5)}
+  else new IntersectionObserver(function(es,o){if(!es[0].isIntersecting)return;o.disconnect();var s0=performance.now();
+    (function f(n){if(touched)return;var t=Math.min(1,(n-s0)/3800),v=t<.65?t/.65:1-(t-.65)/.35*.5;rg.value=v;soil(v);if(t<1)requestAnimationFrame(f)})(s0)},{threshold:.6}).observe(document.getElementById('lab'));
+
+  /* Scroll loop */
+  var boost=1,lastY=0,tick=false;
+  function onScroll(){if(tick)return;tick=true;requestAnimationFrame(function(){tick=false;
+    var y=scrollY,m=document.documentElement.scrollHeight-innerHeight;
+    boost=1+Math.min(Math.abs(y-lastY)/6,5);lastY=y;sky(m>0?y/m:0)})}
+  addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);onScroll();
+
+  /* Polaroids drop in */
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15});
+  document.querySelectorAll('.pol,.rv').forEach(function(el,i){el.style.setProperty('--d',(i%3)*.15+'s');io.observe(el)});
+
+  /* Letter: handwritten typing effect */
+  var letter=document.getElementById('letter'),seal=document.getElementById('seal'),paper=letter.querySelector('.paper'),
+      paras=[].slice.call(paper.querySelectorAll('p')),
+      texts=paras.map(function(p){var t=p.innerHTML.replace(/<br\s*\/?>/g,'\n');p.textContent='';return t}),
+      pen=document.createElement('span'),timer=null,started=false,done=false,
+      calmL=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  pen.className='pen';
+  function fill(){clearTimeout(timer);paras.forEach(function(p,i){p.innerHTML=texts[i].replace(/\n/g,'<br>')});pen.remove();done=true}
+  function follow(){var r=pen.getBoundingClientRect();if(r.bottom>innerHeight-110)scrollBy(0,r.bottom-innerHeight+150)}
+  function write(){
+    started=true;var pi=0,ci=0,tn;
+    function nextPara(){if(pi>=paras.length){pen.remove();done=true;return}
+      paras[pi].textContent='';tn=document.createTextNode('');paras[pi].append(tn,pen);ci=0;step()}
+    function step(){var t=texts[pi];
+      if(ci>=t.length){pi++;timer=setTimeout(nextPara,700);return}
+      var ch=t[ci++];
+      if(ch==='\n'){paras[pi].insertBefore(document.createElement('br'),pen);tn=document.createTextNode('');paras[pi].insertBefore(tn,pen)}
+      else tn.nodeValue+=ch;
+      follow();timer=setTimeout(step,/[.!?]/.test(ch)?340:ch===','?180:26+Math.random()*44)}
+    timer=setTimeout(nextPara,1300)}
+  paper.addEventListener('click',function(){if(!done)fill()});
+  seal.onclick=function(){var o=letter.classList.toggle('open');seal.setAttribute('aria-expanded',o);
+    document.getElementById('hint').textContent=o?'with love':'tap the seal';
+    if(!o){if(started&&!done)fill();return}
+    setTimeout(function(){letter.scrollIntoView({behavior:'smooth',block:'start'})},300);
+    if(!started){if(calmL)fill();else write()}};
+
+  /* Petals */
+  var cv=document.getElementById('petals'),ctx=cv.getContext('2d'),W,H,dpr=Math.min(devicePixelRatio||1,2),
+      cols=['#ff8fb8','#8ea6ff','#b593f0','#ffc2d8','#ffffff'],ps=[],t=0,
+      calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function size(){W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
+  size();addEventListener('resize',size);
+  function petal(burst,x,y){var s=6+Math.random()*9;return{x:x==null?Math.random()*W:x,y:y==null?-20-Math.random()*H:y,s:s,
+    vx:burst?(Math.random()-.5)*8:0,vy:burst?-2-Math.random()*6:.6+Math.random()*1.1,r:Math.random()*6,vr:(Math.random()-.5)*.06,
+    c:cols[Math.floor(Math.random()*cols.length)],ph:Math.random()*6,burst:burst,life:90}}
+  var n=calm?8:(W<700?22:46);for(var i=0;i<n;i++){var q=petal(false);q.y=Math.random()*H;ps.push(q)}
+  addEventListener('pointerdown',function(e){if(calm)return;for(var i=0;i<10;i++)ps.push(petal(true,e.clientX,e.clientY))});
+  function draw(q){ctx.save();ctx.translate(q.x,q.y);ctx.rotate(q.r);ctx.globalAlpha=q.burst?Math.min(1,q.life/40)*.9:.75;ctx.fillStyle=q.c;var s=q.s;
+    ctx.beginPath();ctx.moveTo(0,-s);ctx.bezierCurveTo(s*.9,-s*.4,s*.6,s*.8,0,s);ctx.bezierCurveTo(-s*.6,s*.8,-s*.9,-s*.4,0,-s);ctx.fill();ctx.restore()}
+  function loop(){t+=.02;ctx.clearRect(0,0,W,H);
+    for(var i=ps.length-1;i>=0;i--){var q=ps[i];
+      if(q.burst){q.vy+=.12;q.vx*=.985;q.x+=q.vx;q.y+=q.vy;q.life--;if(q.life<0){ps.splice(i,1);continue}}
+      else{q.y+=q.vy*(calm?1:boost);q.x+=Math.sin(t+q.ph)*.7;if(q.y>H+20){q.y=-20;q.x=Math.random()*W}}
+      q.r+=q.vr;draw(q)}
+    boost+=(1-boost)*.05;requestAnimationFrame(loop)}
+  loop();
+})();
+</script>
+</body>
+</html>
